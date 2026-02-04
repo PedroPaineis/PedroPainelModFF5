@@ -1,0 +1,171 @@
+html
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <style>
+        html, body {
+            margin: 0; padding: 0; width: 100vw; height: 100vh;
+            background: transparent !important; overflow: hidden;
+            position: fixed; pointer-events: none; font-family: sans-serif;
+        }
+
+        #clt-icon {
+            width: 60px; height: 60px; background: #000; border: 2.5px solid #ff0000;
+            border-radius: 50%; position: fixed; top: 150px; left: 15px;
+            z-index: 2147483647; display: none; align-items: center; justify-content: center;
+            color: #ff0000; font-weight: 900; box-shadow: 0 0 15px #ff0000;
+            pointer-events: auto; cursor: pointer; touch-action: none;
+        }
+
+        #clt-panel {
+            width: 260px; background: #0a0a0a; border: 1.5px solid #ff0000;
+            border-radius: 12px; position: fixed; top: 50%; left: 50%;
+            transform: translate(-50%, -50%); z-index: 2147483647;
+            display: block; box-shadow: 0 0 40px #000; pointer-events: auto;
+        }
+
+        .bar { height: 35px; display: flex; justify-content: space-between; align-items: center; padding: 0 12px; border-bottom: 1px solid #222; cursor: move; touch-action: none; }
+        .menu-title { color: #ff0000; font-size: 11px; font-weight: bold; }
+
+        .content { padding: 20px; text-align: center; }
+        
+        input {
+            width: 90%; background: #111; border: 1px solid #333; color: #fff;
+            padding: 10px; border-radius: 5px; margin-bottom: 10px; font-size: 12px;
+            outline: none; text-align: center;
+        }
+
+        .apply-btn {
+            width: 100%; background: #ff0000; color: #000; border: none;
+            padding: 12px; font-weight: 900; border-radius: 6px; cursor: pointer;
+            text-transform: uppercase; margin-bottom: 10px;
+        }
+
+        .buy-btn {
+            background: transparent; color: #ff0000; border: 1px solid #ff0000;
+            padding: 8px; font-size: 10px; font-weight: bold; border-radius: 6px;
+            cursor: pointer; width: 100%; text-transform: uppercase;
+        }
+
+        #generator-ui { display: none; }
+        #resultado {
+            margin-top: 15px; padding: 10px; background: #111;
+            border: 1px dashed #ff0000; border-radius: 5px;
+            display: none; font-size: 11px; color: #fff; text-align: left;
+        }
+
+        .val { color: #00ff00; font-weight: bold; float: right; }
+        .copy-btn { width: 100%; background: #333; color: #fff; border: 1px solid #444; padding: 5px; font-size: 9px; margin-top: 10px; border-radius: 4px; cursor: pointer; }
+        select { width: 98%; background: #111; border: 1px solid #333; color: #fff; padding: 8px; border-radius: 5px; margin-bottom: 15px; outline: none; }
+    </style>
+</head>
+<body onload="abrirFF()">
+
+<div id="clt-icon">PEDRO</div>
+
+<div id="clt-panel">
+    <div id="drag" class="bar">
+        <div class="menu-title" id="p-title">PEDROPAINEIS | LOGIN</div>
+        <div class="controls" style="color:#fff; font-weight:bold; cursor:pointer" onclick="min()">_</div>
+    </div>
+
+    <div class="content">
+        <div id="login-ui">
+            <p style="color:#fff; font-size:12px">CHAVE DE ACESSO NECESSÁRIA</p>
+            <input type="password" id="user-key" placeholder="DIGITE A KEY">
+            <button class="apply-btn" onclick="checkLogin()">LOGAR NO SISTEMA</button>
+            <button class="buy-btn" onclick="alert('Compre a key com o vendedor do aplicativo')">COMPRAR CHAVE</button>
+        </div>
+
+        <div id="generator-ui">
+            <input type="text" id="modelo" placeholder="Modelo do Celular">
+            <select id="tipo">
+                <option value="extrema">SENSIBILIDADE ALTA (+200)</option>
+                <option value="baixa">SENSIBILIDADE PADRÃO (100)</option>
+            </select>
+            <button class="apply-btn" onclick="gerarSensi()">GERAR AGORA</button>
+
+            <div id="resultado">
+                GERAL: <span class="val" id="res_geral">0</span><br>
+                RED: <span class="val" id="res_red">0</span><br>
+                2X: <span class="val" id="res_2x">0</span><br>
+                4X: <span class="val" id="res_4x">0</span><br>
+                DPI: <span class="val" id="res_dpi">0</span>
+                <button class="copy-btn" onclick="copiarSensi()">COPIAR VALORES</button>
+                <hr style="border:0; border-top:1px solid #222; margin:10px 0">
+                <button class="apply-btn" style="height:25px; padding:0; font-size:9px" onclick="abrirFF()">ABRIR FREE FIRE</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const CHAVE_CORRETA = "PedroPaineisPro"; 
+
+    const panel = document.getElementById('clt-panel');
+    const icon = document.getElementById('clt-icon');
+
+    function checkLogin() {
+        const key = document.getElementById('user-key').value;
+        if(key === CHAVE_CORRETA) {
+            document.getElementById('login-ui').style.display = 'none';
+            document.getElementById('generator-ui').style.display = 'block';
+            document.getElementById('p-title').innerText = "PEDROPAINEIS | GENERATOR";
+            alert("KEY VALIDADA!");
+        } else {
+            alert("CHAVE INCORRETA!");
+        }
+    }
+
+    function gerarSensi() {
+        const modelo = document.getElementById('modelo').value;
+        const tipo = document.getElementById('tipo').value;
+        if(modelo === "") return alert("Digite o modelo!");
+
+        if(tipo === "extrema") {
+            document.getElementById('res_geral').innerText = Math.floor(Math.random() * 501) + 400;
+            document.getElementById('res_red').innerText = Math.floor(Math.random() * 401) + 300;
+            document.getElementById('res_2x').innerText = Math.floor(Math.random() * 301) + 250;
+            document.getElementById('res_4x').innerText = Math.floor(Math.random() * 251) + 200;
+            document.getElementById('res_dpi').innerText = Math.floor(Math.random() * 500) + 700;
+        } else {
+            document.getElementById('res_geral').innerText = Math.floor(Math.random() * 11) + 90;
+            document.getElementById('res_red').innerText = Math.floor(Math.random() * 16) + 85;
+            document.getElementById('res_2x').innerText = Math.floor(Math.random() * 21) + 80;
+            document.getElementById('res_4x').innerText = Math.floor(Math.random() * 21) + 75;
+            document.getElementById('res_dpi').innerText = Math.floor(Math.random() * 150) + 411;
+        }
+        document.getElementById('resultado').style.display = 'block';
+    }
+
+    function copiarSensi() {
+        const g = document.getElementById('res_geral').innerText;
+        const r = document.getElementById('res_red').innerText;
+        const m2 = document.getElementById('res_2x').innerText;
+        const m4 = document.getElementById('res_4x').innerText;
+        const d = document.getElementById('res_dpi').innerText;
+        const texto = `SENSI PEDROPAINEIS\nGeral: ${g}\nRed: ${r}\n2x: ${m2}\n4x: ${m4}\nDPI: ${d}`;
+        navigator.clipboard.writeText(texto).then(() => alert("Copiado!"));
+    }
+
+    function abrirFF() { window.location.href = "intent://#Intent;package=com.dts.freefireth;scheme=android-app;end"; }
+    function min() { panel.style.display = 'none'; icon.style.display = 'flex'; }
+    icon.onclick = () => { panel.style.display = 'block'; icon.style.display = 'none'; };
+
+    icon.addEventListener('touchmove', (e) => {
+        let t = e.touches[0];
+        icon.style.left = (t.pageX - 30) + 'px';
+        icon.style.top = (t.pageY - 30) + 'px';
+    });
+
+    document.getElementById('drag').addEventListener('touchmove', (e) => {
+        let t = e.touches[0];
+        panel.style.transform = 'none';
+        panel.style.left = (t.pageX - 130) + 'px';
+        panel.style.top = (t.pageY - 17) + 'px';
+    });
+</script>
+</body>
+</html>
